@@ -1,21 +1,23 @@
 // app.js
 const express = require('express')
-const { response } = require('express')
 const app = express()
 const port = 3000
 
 app.use((req, res, next) => {
-  // const requestTime = Date.now()
+  // Q1
   req.requestTime = Date.now()
-  
-  console.log("user request req.requestTime: ", req.requestTime);
-  const question_1 = new Date(req.requestTime).toLocaleString() + ' | ' + req.method + " from " + req.path
-  console.log("Q1: ", question_1)
-
+  const question1 = new Date(req.requestTime).toLocaleString() + ' | ' + req.method + " from " + req.originalUrl
+  console.log("Question 1: ", question1)
+  // Q2
+  res.on('finish', () => {
+    const period = Date.now() - req.requestTime
+    const question2 = question1 + " | total time: " + period + "ms"
+    console.log("Question 2: ", question2)
+  })
   next()
 })
 
-app.get("/", (req, res) => {
+app.get('/', (req, res) => {
   res.send("列出全部 Todo")
 })
 
