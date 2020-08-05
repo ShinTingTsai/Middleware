@@ -7,12 +7,15 @@ app.use((req, res, next) => {
   // Q1
   req.requestTime = Date.now()
   const question1 = new Date(req.requestTime).toLocaleString() + ' | ' + req.method + " from " + req.originalUrl
-  console.log("Question 1: ", question1)
+  console.log("[Question 1]", question1)
   // Q2
   res.on('finish', () => {
-    const period = Date.now() - req.requestTime
+    const responseTime = Date.now()
+    const period = responseTime - req.requestTime
     const question2 = question1 + " | total time: " + period + "ms"
-    console.log("Question 2: ", question2)
+    console.log('[Question 2] Server get request time: ', new Date(req.requestTime).toLocaleString())
+    console.log('[Question 2] Server response time: ', new Date(responseTime).toLocaleString())
+    console.log("[Question 2]", question2)
   })
   next()
 })
